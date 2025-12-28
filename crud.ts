@@ -1,3 +1,4 @@
+import { inflate } from "node:zlib";
 import { prisma } from "./lib/prisma";
 
 async function createUser() {
@@ -22,4 +23,32 @@ const createPost = async () => {
   console.log("post created successfully", createPost);
 };
 
-createPost();
+const createProfile = async () => {
+  const createProfile = await prisma.profile.create({
+    data: {
+      userId: 2,
+      bio: "next level web 2",
+    },
+  });
+
+  console.log("profile created successfully", createProfile);
+};
+
+// createUser();
+// createPost();
+// createProfile();
+
+// retrive user
+const user = async () => {
+  const user = await prisma.user.findMany({
+    include: {
+      posts: true,
+      profile: true,
+    },
+  });
+
+  //   console.log(user);
+  console.dir(user, { depth: inflate });
+};
+
+user();
